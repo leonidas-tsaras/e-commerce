@@ -35,7 +35,11 @@ h6 {
 ul, ol {
 	list-style-position:inside;
 	margin: 1em;
-	line-height: 160%;
+}
+
+li {
+	margin-top: .4em;
+	margin-bottom: .4em;
 }
 
 p {
