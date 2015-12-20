@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>e-commerce lec. 1</title>
+		<!--  -->
+		<link href="main.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<h1>SQL injection</h1>
+		<p>Είναι μια τεχνική (hacking) για επίθεση σε εφαρμογές που διαχειρίζονται βάσεις δεδομένων (data-driven). Με την τεχνική αυτή εισάγεται (injection) από τον χρήστη (όπως μέσω μιας φόρμας) κακόβουλο σκριπτ με σκοπό την αλλοίωση του τελικού sql ερωτήματος.</p>
+		<h5>Παράδειγμα</h5>
+		<section>
+		<p>Έστω ο κώδικας (σε php):</p>
+		<pre>$statement = "SELECT * FROM users WHERE password = $password";</pre>
+		<p>Αν ο χρήστης εισάγει αντί του password: </p>
+		<pre>'' OR 1 = 1</pre>
+		<p>το τελικό ερώτημα διαμορφώνεται έτσι:</p>
+		<pre>$statement = "SELECT * FROM users WHERE password = '' OR 1 = 1";</pre>
+		<p>και επειδή η πρόταση WHERE είναι αληθής, το ερώτημα θα εκτελεστεί.</p>
+		</section>
+
+		<h5>Παράδειγμα</h5>
+		<section>
+		<p>Έστω ο κώδικας (σε php):</p>
+		<pre>$statement = "SELECT * FROM userinfo WHERE id = $a_variable";</pre>
+		<p>Αν ο χρήστης εισάγει:</p>
+		<pre>1; DROP TABLE users</pre>
+		<p>το τελικό ερώτημα διαμορφώνεται έτσι:</p>
+		<pre>SELECT * FROM userinfo WHERE id = 1; DROP TABLE users;</pre>
+		<p>και η πρόταση "DROP TABLE users" θα εκτελεστεί.</p>
+		</section>
+
+		<h5>Παράδειγμα</h5>
+		<section>
+		<p>έστω το URL: http://books.example.com/showReview.php?ID=5</p>
+		<p>με αντίστοιχο ερώτημα: </p>
+		<pre>SELECT * FROM bookreviews WHERE ID = ID;</pre>
+		<p>αν δώσουμε:</p>
+		<pre>http://books.example.com/showReview.php?ID=5 OR 1=1</pre>
+		<p>και</p>
+		<pre>http://books.example.com/showReview.php?ID=5 AND 1=2</pre>
+		<p>που αντιστοιχεί στα ερωτήματα:</p>
+		<pre>
+SELECT * FROM bookreviews WHERE ID = '5' OR '1'='1';
+SELECT * FROM bookreviews WHERE ID = '5' AND '1'='2';
+		</pre>
+		<p>Αν ο σέρβερ απαντήσει, θα σημαίνει ότι δεν κάνει έλεγχο στις τιμές και αυτό τον καθιστά ευάλωτο.</p>
+		</section>
+
+		<h3>Αντιμετώπιση (https://www.owasp.org)</h3>
+		<h4>Πρωτεύουσα άμυνα</h4>
+		<h5>Χρήση Prepared Statements (Παραμετροποιημένα Ερωτήματα)</h5>
+		<section>
+			<p>Η χρήση Prepared Statements είναι ένας ενδεδειγμένος τρόπος γραφής σωστών ερωτημάτων.</p>
+		</section>
+		<h5>Χρήση Stored Procedures</h5>
+		<section>
+			<p>Τα ερωτήματα αποθηκεύονται στη βάση δεδομένων και καλούνται από την εφαρμογή.</p>
+		</section>
+		<h5>Η χρήση χαρακτήρων διαφυγής (escape characters)</h5>
+		<section>
+			<p>Με την τεχνική αυτή οι χαρακτήρες γίνονται “escaped” πριν χρησιμοποιηθούν στο ερώτημα.</p>
+			<p>Ως καλή πρόταση θεωρείται και η μετατροπή σε δεκαεξαδικής μορφής κωδικοποίηση.</p>
+		</section>
+
+		<h4>Δευτερεύουσα άμυνα</h4>
+		<h5>Δικαιώματα</h5>
+		<section>
+			<p>Πρέπει να γίνεται πιο προσεκτικός έλεγχος για το ποιός έχει δικαιώματα και ποιά.</p>
+		</section>
+
+		<h5>Λίστα</h5>
+		<section>
+		<p>Γίνεται χρήση λίστας σύμφωνα με την οποία τα δεδομένα που εισάγει ο χρήστης πρέπει να περιέχονται σε μια συγκεκριμένη λίστα.</p>
+		</section>
+	</body>
+</html>
+
